@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>MotoGP 语言学院 iPad 版</title>
+<style>
+:root {
+  --bg:#0d0f14;
+  --panel:#151922;
+  --panel2:#1c2230;
+  --text:#eef2ff;
+  --muted:#aab4cc;
+  --accent:#ff7a00;
+  --accent2:#66d9ff;
+  --line:rgba(255,255,255,.08);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:linear-gradient(180deg,#10131a 0%,#090b10 100%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+body{-webkit-text-size-adjust:100%;}
+header{
+  position:sticky;top:0;z-index:20;
+  padding:14px 16px calc(14px + env(safe-area-inset-top));
+  background:rgba(10,12,18,.86);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--line);
+}
+.brand{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand h1{font-size:20px;margin:0;letter-spacing:.2px}
+.badge{padding:8px 12px;border-radius:999px;background:rgba(255,122,0,.14);color:#ffd7b3;border:1px solid rgba(255,122,0,.25);font-size:13px}
+.wrap{max-width:1280px;margin:0 auto;padding:16px}
+.hero{
+  display:grid;grid-template-columns:1.4fr .9fr;gap:14px;align-items:stretch;
+}
+.card{
+  background:linear-gradient(180deg,var(--panel) 0%,#111521 100%);
+  border:1px solid var(--line);border-radius:18px;padding:16px;
+  box-shadow:0 10px 30px rgba(0,0,0,.24);
+}
+.hero h2{margin:0 0 8px 0;font-size:28px;line-height:1.1}
+.hero p{margin:8px 0;color:var(--muted);font-size:15px;line-height:1.6}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+button,.chip,.tab{
+  -webkit-tap-highlight-color:transparent;
+  border:1px solid var(--line);background:var(--panel2);color:var(--text);
+  border-radius:14px;padding:12px 14px;font-size:15px;cursor:pointer;
+}
+button:active,.tab:active{transform:scale(.98)}
+button.primary{background:linear-gradient(135deg,var(--accent) 0%,#ff4d7d 100%);border-color:transparent;color:white;font-weight:700}
+button.ghost{background:transparent}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:14px}
+.stat{padding:14px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid var(--line)}
+.stat .n{font-size:24px;font-weight:800}
+.stat .l{font-size:13px;color:var(--muted)}
+
+.section-title{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:20px 0 10px}
+.section-title h3{margin:0;font-size:20px}
+.section-title small{color:var(--muted)}
+
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 6px}
+.tab.active{background:rgba(102,217,255,.15);border-color:rgba(102,217,255,.35)}
+.controls{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;margin-top:14px}
+.searchbar input{
+  width:100%;padding:14px 16px;border-radius:14px;border:1px solid var(--line);
+  background:#0f1420;color:var(--text);font-size:16px;outline:none;
+}
+.kbd{font-size:12px;color:var(--muted);margin-top:8px}
+
+.team-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.team-card{
+  padding:14px;border-radius:16px;border:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
+  cursor:pointer;
+}
+.team-card.active{outline:2px solid rgba(255,122,0,.65)}
+.team-card h4{margin:0 0 6px;font-size:17px}
+.meta{color:var(--muted);font-size:13px;line-height:1.5}
+.riders{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.pill{padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid var(--line);font-size:13px}
+.panel{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.big{font-size:22px;font-weight:800;margin:0 0 8px}
+.list{margin:0;padding-left:18px;color:var(--muted)}
+.scene{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.scene-card{padding:14px;border-radius:16px;border:1px solid var(--line);background:#111726}
+.scene-card h4{margin:0 0 8px}
+.lang-box{padding:12px;border-radius:14px;background:rgba(255,255,255,.04);margin:8px 0}
+.lang-label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.term-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.term{padding:10px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid var(--line);font-size:14px}
+.quiz input{
+  width:100%;padding:14px 16px;border-radius:14px;border:1px solid var(--line);
+  background:#0f1420;color:var(--text);font-size:16px;outline:none;margin:8px 0 10px;
+}
+.progress{height:18px;border-radius:999px;background:#262d3b;overflow:hidden;border:1px solid var(--line)}
+.bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .35s ease}
+.footer-note{color:var(--muted);font-size:13px;line-height:1.6;margin-top:10px}
+
+.drawer{
+  position:fixed;left:50%;transform:translateX(-50%);
+  bottom:12px;z-index:30;width:min(1180px,calc(100% - 20px));
+  display:none;
+}
+.drawer-inner{
+  display:flex;justify-content:space-between;gap:10px;align-items:center;
+  padding:12px 14px;border-radius:18px;background:rgba(16,18,25,.92);backdrop-filter:blur(16px);
+  border:1px solid var(--line);
+}
+.small{font-size:13px;color:var(--muted)}
+
+@media (max-width: 980px){
+  .hero,.controls,.panel,.scene,.grid,.team-grid,.term-grid{grid-template-columns:1fr}
+  .drawer{display:block}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <h1>🏍️ MotoGP 语言学院 · iPad 版</h1>
+    <div class="badge">触控优化 · 英语 / 西语 · 技术场景学习</div>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="hero">
+    <div class="card">
+      <h2>把 MotoGP 变成你的语言课堂</h2>
+      <p>点车队、听发音、看技术卡片、做小测验。内容围绕维修区、遥测、轮胎、空气动力学和你喜欢的车手来设计。</p>
+      <div class="row">
+        <button class="primary" onclick="jumpTo('teams')">查看车队</button>
+        <button onclick="jumpTo('acosta')">Pedro Acosta</button>
+        <button onclick="jumpTo('scenes')">场景学习</button>
+        <button onclick="jumpTo('quiz')">开始测验</button>
+      </div>
+      <div class="grid">
+        <div class="stat"><div class="n" id="teamCount">11</div><div class="l">MotoGP 车队</div></div>
+        <div class="stat"><div class="n">22</div><div class="l">现役席位</div></div>
+        <div class="stat"><div class="n">3</div><div class="l">语言：中文 / 英语 / 西语</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-title" style="margin-top:0">
+        <h3>今日任务</h3>
+        <small>学习进度</small>
+      </div>
+      <div class="progress"><div class="bar" id="bar"></div></div>
+      <p class="small" id="xpText">XP：0 / 100</p>
+      <div class="row">
+        <button class="ghost" onclick="addXP(10)">+10 XP</button>
+        <button class="ghost" onclick="addXP(20)">+20 XP</button>
+        <button class="primary" onclick="addXP(35)">完成一课</button>
+      </div>
+      <p class="footer-note">建议横屏浏览，按钮适合 iPad 触控。发音按钮使用浏览器自带语音，不需要额外安装。</p>
+    </div>
+  </section>
+
+  <div class="controls">
+    <div class="card searchbar">
+      <div class="section-title" style="margin-top:0">
+        <h3 id="teams">车队数据库</h3>
+        <small>点一下查看详情</small>
+      </div>
+      <input id="search" placeholder="搜索车队或车手，例如 Acosta / Aprilia / Yamaha" oninput="renderTeams()">
+      <div class="kbd">当前数据基于 2026 赛季 MotoGP 官方车队页整理。</div>
+      <div class="tabs" id="filterTabs"></div>
+    </div>
+    <div class="card">
+      <div class="section-title" style="margin-top:0">
+        <h3>当前车队详情</h3>
+        <small id="selectedHint">选择一个车队</small>
+      </div>
+      <div id="selectedTeam">
+        <p class="big">Aprilia Racing</p>
+        <p class="meta">点左侧任意车队卡片，右边会切换成该车队的资料。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">
+    <h3>全部 MotoGP 车队</h3>
+    <small>支持筛选与搜索</small>
+  </div>
+  <div class="team-grid" id="teamGrid"></div>
+
+  <div class="section-title">
+    <h3 id="acosta">Pedro Acosta 专区</h3>
+    <small>你重点想学的部分</small>
+  </div>
+  <section class="panel">
+    <div class="card">
+      <p class="big">Pedro Acosta</p>
+      <p class="meta">KTM 车手，官方资料显示他出生于 Murcia，生日 2004-05-25，身高 171 cm，体重 63 kg。<br>他 2024 年完成 MotoGP 首秀，2026 继续冲击首胜。</p>
+      <div class="term-grid">
+        <div class="term">Bike / 车组：KTM</div>
+        <div class="term">Birth place / 出生地：Murcia</div>
+        <div class="term">Height / 身高：171 cm</div>
+        <div class="term">Weight / 体重：63 kg</div>
+      </div>
+      <div class="row" style="margin-top:12px">
+        <button onclick="speak('Pedro Acosta is analysing telemetry data.', 'en-US')">听英语</button>
+        <button onclick="speak('Pedro Acosta está analizando los datos de telemetría.', 'es-ES')">听西语</button>
+      </div>
+      <p class="footer-note">适合练习：分析、遥测、轮胎、出弯牵引力、赛车反馈。</p>
+    </div>
+    <div class="card">
+      <div class="section-title" style="margin-top:0">
+        <h3>Acosta 关键词</h3>
+        <small>点击即朗读</small>
+      </div>
+      <div class="term-grid" id="acostaTerms"></div>
+    </div>
+  </section>
+
+  <div class="section-title">
+    <h3 id="scenes">场景学习</h3>
+    <small>英语 / 西语 / 中文</small>
+  </div>
+  <section class="scene" id="sceneGrid"></section>
+
+  <div class="section-title">
+    <h3>世界冠军词汇墙</h3>
+    <small>历史名将 + 技术风格</small>
+  </div>
+  <section class="panel">
+    <div class="card">
+      <p class="meta">可作为“人物 + 词汇”学习入口。你可以把每位冠军当成一个专题页来背单词、练句子。</p>
+      <div class="riders">
+        <span class="pill">Valentino Rossi</span>
+        <span class="pill">Marc Márquez</span>
+        <span class="pill">Jorge Lorenzo</span>
+        <span class="pill">Casey Stoner</span>
+        <span class="pill">Francesco Bagnaia</span>
+        <span class="pill">Fabio Quartararo</span>
+        <span class="pill">Jorge Martín</span>
+        <span class="pill">Joan Mir</span>
+      </div>
+      <p class="footer-note">这是历史学习模块，不影响当前车队练习。</p>
+    </div>
+    <div class="card">
+      <div class="section-title" style="margin-top:0">
+        <h3>核心术语</h3>
+        <small>触碰即可发音</small>
+      </div>
+      <div class="term-grid" id="vocabGrid"></div>
+    </div>
+  </section>
+
+  <div class="section-title">
+    <h3 id="quiz">小测验</h3>
+    <small>答对加 XP</small>
+  </div>
+  <section class="panel">
+    <div class="card quiz">
+      <p class="big">Question</p>
+      <p id="quizQ">What does telemetry show?</p>
+      <input id="quizA" placeholder="输入英文答案">
+      <div class="row">
+        <button class="primary" onclick="checkQuiz()">提交</button>
+        <button onclick="nextQuiz()">换一道</button>
+      </div>
+      <p id="quizResult" class="meta"></p>
+    </div>
+    <div class="card">
+      <p class="big">你会学到什么</p>
+      <ul class="list">
+        <li>维修区常用句式</li>
+        <li>英语 / 西语技术词汇</li>
+        <li>MotoGP 车队与车手识别</li>
+        <li>听说结合：按钮朗读 + 自测</li>
+      </ul>
+      <p class="footer-note">这个版本已经适合 iPad 直接打开浏览和练习，后面还可以继续加动画、拖拽配对和卡片翻转。</p>
+    </div>
+  </section>
+</div>
+
+<div class="drawer">
+  <div class="drawer-inner">
+    <div>
+      <div style="font-weight:700">iPad 快捷栏</div>
+      <div class="small">车队 · 场景 · 测验 · Acosta</div>
+    </div>
+    <div class="row">
+      <button onclick="jumpTo('teams')">车队</button>
+      <button onclick="jumpTo('scenes')">场景</button>
+      <button onclick="jumpTo('quiz')">测验</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const teams = [{"name": "Aprilia Racing", "bike": "Aprilia RS-GP", "riders": ["Marco Bezzecchi", "Jorge Martín"], "note": "Noale 工厂车队，适合学习空气动力学、电子系统和出弯牵引力。"}, {"name": "BK8 Gresini Racing MotoGP", "bike": "Ducati Desmosedici GP", "riders": ["Fermín Aldeguer", "Alex Márquez"], "note": "强调入弯速度、赛车稳定性和赛道节奏。"}, {"name": "Ducati Lenovo Team", "bike": "Ducati Desmosedici GP", "riders": ["Francesco Bagnaia", "Marc Márquez"], "note": "适合学习刹车、机械抓地力与赛道适配。"}, {"name": "Honda HRC Castrol", "bike": "Honda RC213V", "riders": ["Luca Marini", "Joan Mir"], "note": "适合学习底盘平衡、转向反馈和前轮信心。"}, {"name": "LCR Honda", "bike": "Honda RC213V", "riders": ["Johann Zarco", "Diogo Moreira"], "note": "适合做车手反馈英语/西语练习。"}, {"name": "Monster Energy Yamaha MotoGP", "bike": "Yamaha YZR-M1", "riders": ["Fabio Quartararo", "Alex Rins"], "note": "适合学习平顺油门、弯中速度与电子辅助。"}, {"name": "Pertamina Enduro VR46 Racing Team", "bike": "Ducati Desmosedici GP", "riders": ["Franco Morbidelli", "Fabio Di Giannantonio"], "note": "很适合练习车队无线电语句。"}, {"name": "Prima Pramac Yamaha MotoGP", "bike": "Yamaha YZR-M1", "riders": ["Toprak Razgatlıoğlu", "Jack Miller"], "note": "适合学习跨赛车项目转会与适应术语。"}, {"name": "Red Bull KTM Factory Racing", "bike": "KTM RC16", "riders": ["Brad Binder", "Pedro Acosta"], "note": "你的重点车队，适合做技术分析、车身姿态和轮胎管理。"}, {"name": "Red Bull KTM Tech3", "bike": "KTM RC16", "riders": ["Maverick Viñales", "Enea Bastianini"], "note": "适合学习数据对比和设定变化。"}, {"name": "Trackhouse MotoGP Team", "bike": "Aprilia RS-GP", "riders": ["Raúl Fernández", "Ai Ogura"], "note": "适合学习比赛策略和新人适应。"}];
+const scenes = [{"title": "维修区会议", "en": "We need more rear grip on corner exit.", "es": "Necesitamos más agarre trasero a la salida de la curva.", "cn": "我们需要在出弯时获得更好的后轮抓地力。", "terms": [["rear grip", "后轮抓地力"], ["corner exit", "出弯"], ["need", "需要"]]}, {"title": "遥测分析", "en": "The telemetry shows a loss of traction at mid-corner.", "es": "La telemetría muestra una pérdida de tracción en mitad de la curva.", "cn": "遥测显示中弯时抓地力下降。", "terms": [["telemetry", "遥测"], ["traction", "抓地力"], ["mid-corner", "弯心"]]}, {"title": "空气动力学", "en": "The new aero package improves stability in fast corners.", "es": "El nuevo paquete aerodinámico mejora la estabilidad en curvas rápidas.", "cn": "新空气动力学套件提升了高速弯稳定性。", "terms": [["aero package", "空气动力学套件"], ["stability", "稳定性"], ["fast corners", "高速弯"]]}, {"title": "轮胎管理", "en": "The front tyre is overheating after three laps.", "es": "El neumático delantero se está sobrecalentando después de tres vueltas.", "cn": "前轮胎在三圈后开始过热。", "terms": [["front tyre", "前胎"], ["overheating", "过热"], ["laps", "圈"]]}];
+const vocab = [["traction", "tracción", "抓地力"], ["downforce", "carga aerodinámica", "下压力"], ["telemetry", "telemetría", "遥测"], ["suspension", "suspensión", "悬挂"], ["braking point", "punto de frenada", "刹车点"], ["engine braking", "freno motor", "发动机制动"], ["ride height device", "dispositivo de altura", "车高装置"], ["rear grip", "agarre trasero", "后轮抓地力"], ["tyre wear", "desgaste del neumático", "轮胎磨损"], ["aero package", "paquete aerodinámico", "空气动力学套件"]];
+let selectedIndex = 8;
+let xp = 0;
+let filter = "全部";
+let quizIndex = 0;
+
+function jumpTo(id) {
+  document.getElementById(id).scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+function speak(text, lang) {
+  try {
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = lang;
+    u.rate = 0.92;
+    u.pitch = 1;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+  } catch (e) {
+    alert("这个浏览器暂时不支持语音朗读。");
+  }
+}
+
+function addXP(n) {
+  xp = Math.min(100, xp + n);
+  document.getElementById("bar").style.width = xp + "%";
+  document.getElementById("xpText").textContent = `XP：${xp} / 100`;
+}
+
+function renderTabs() {
+  const tabs = ["全部", ...teams.map(t => t.name)];
+  const el = document.getElementById("filterTabs");
+  el.innerHTML = tabs.map(t => `<div class="tab ${filter===t ? 'active' : ''}" onclick="setFilter('${t.replace(/'/g, "\\'")}')">${t}</div>`).join("");
+}
+
+function setFilter(name) {
+  filter = name;
+  renderTabs();
+  renderTeams();
+}
+
+function renderTeams() {
+  const q = document.getElementById("search").value.trim().toLowerCase();
+  const grid = document.getElementById("teamGrid");
+  const filtered = teams.filter((t) => {
+    const matchFilter = filter === "全部" || t.name === filter;
+    const hay = (t.name + " " + t.bike + " " + t.riders.join(" ") + " " + t.note).toLowerCase();
+    return matchFilter && (!q || hay.includes(q));
+  });
+  grid.innerHTML = filtered.map((t) => {
+    const idx = teams.indexOf(t);
+    return `
+      <div class="team-card ${idx===selectedIndex ? 'active':''}" onclick="selectTeam(${idx})">
+        <h4>${t.name}</h4>
+        <div class="meta">${t.bike}</div>
+        <div class="riders">${t.riders.map(r => `<span class="pill">${r}</span>`).join('')}</div>
+        <div class="meta" style="margin-top:10px">${t.note}</div>
+      </div>
+    `;
+  }).join('') || '<div class="card">没有找到匹配的车队或车手。</div>';
+}
+
+function selectTeam(idx) {
+  selectedIndex = idx;
+  const t = teams[idx];
+  document.getElementById("selectedHint").textContent = "已选择：" + t.name;
+  document.getElementById("selectedTeam").innerHTML = `
+    <p class="big">${t.name}</p>
+    <p class="meta"><b>Bike:</b> ${t.bike}</p>
+    <p class="meta"><b>Riders:</b> ${t.riders.join(" / ")}</p>
+    <p class="meta"><b>Study note:</b> ${t.note}</p>
+    <div class="row" style="margin-top:12px">
+      <button onclick="speak('${t.name.replace(/'/g, "\\'")}', 'en-US')">听车队名</button>
+      <button onclick="speak('${(t.riders[0] + ' team').replace(/'/g, "\\'")}', 'en-US')">听车手名</button>
+    </div>
+  `;
+  renderTeams();
+}
+
+function renderScenes() {
+  document.getElementById("sceneGrid").innerHTML = scenes.map((s) => `
+    <div class="scene-card">
+      <h4>${s.title}</h4>
+      <div class="lang-box">
+        <div class="lang-label">English</div>
+        <div>${s.en}</div>
+        <button style="margin-top:8px" onclick="speak('${s.en.replace(/'/g, "\\'")}', 'en-US')">朗读英语</button>
+      </div>
+      <div class="lang-box">
+        <div class="lang-label">Español</div>
+        <div>${s.es}</div>
+        <button style="margin-top:8px" onclick="speak('${s.es.replace(/'/g, "\\'")}', 'es-ES')">朗读西语</button>
+      </div>
+      <div class="lang-box">
+        <div class="lang-label">中文</div>
+        <div>${s.cn}</div>
+      </div>
+      <div class="term-grid">
+        ${s.terms.map(([a,b]) => `<div class="term">${a} → ${b}</div>`).join("")}
+      </div>
+    </div>
+  `).join("");
+}
+
+function renderVocab() {
+  document.getElementById("vocabGrid").innerHTML = vocab.map(([en, es, cn]) => `
+    <div class="term" onclick="speak('${en.replace(/'/g, "\\'")}', 'en-US')">${en}<br><span class="meta">${es} / ${cn}</span></div>
+  `).join("");
+}
+
+function renderAcostaTerms() {
+  const acostaVocab = vocab.slice(0, 6);
+  document.getElementById("acostaTerms").innerHTML = acostaVocab.map(([en, es, cn]) => `
+    <div class="term" onclick="speak('${en.replace(/'/g, "\\'")}', 'en-US')">${en}<br><span class="meta">${es} / ${cn}</span></div>
+  `).join("");
+}
+
+const quizBank = [
+  ["What does telemetry show?", "telemetry"],
+  ["How do you say tracción in English?", "traction"],
+  ["What is rear grip in Chinese?", "后轮抓地力"],
+  ["Which bike does Pedro Acosta ride?", "ktm"],
+  ["How do you say 下压力 in Spanish?", "carga aerodinámica"],
+];
+
+function nextQuiz() {
+  quizIndex = (quizIndex + 1) % quizBank.length;
+  document.getElementById("quizQ").textContent = quizBank[quizIndex][0];
+  document.getElementById("quizA").value = "";
+  document.getElementById("quizResult").textContent = "";
+}
+
+function checkQuiz() {
+  const ans = document.getElementById("quizA").value.trim().toLowerCase();
+  const key = quizBank[quizIndex][1].toLowerCase();
+  if (!ans) {
+    document.getElementById("quizResult").textContent = "先输入答案。";
+    return;
+  }
+  const ok = ans.includes(key) || key.includes(ans);
+  if (ok) {
+    document.getElementById("quizResult").textContent = "答对了，+20 XP。";
+    addXP(20);
+  } else {
+    document.getElementById("quizResult").textContent = "再试一次。";
+  }
+}
+
+renderTabs();
+renderTeams();
+renderScenes();
+renderVocab();
+renderAcostaTerms();
+selectTeam(selectedIndex);
+document.getElementById("teamCount").textContent = teams.length;
+document.getElementById("quizQ").textContent = quizBank[0][0];
+</script>
+</body>
+</html>
