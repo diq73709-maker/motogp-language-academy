@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MotoGP Language Academy</title>
+
+<style>
+body{
+    font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+    margin:0;
+    background:#0d1117;
+    color:white;
+}
+header{
+    padding:30px;
+    text-align:center;
+    background:#161b22;
+}
+.card{
+    background:#1c2128;
+    margin:15px;
+    padding:20px;
+    border-radius:16px;
+}
+button{
+    background:#ff7a00;
+    color:white;
+    border:none;
+    padding:12px 18px;
+    border-radius:10px;
+    font-size:16px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🏍️ MotoGP Language Academy</h1>
+<p>英语 × 西班牙语 × MotoGP技术学习</p>
+</header>
+
+<div class="card">
+<h2>⭐ Pedro Acosta专区</h2>
+<p>学习MotoGP英语和西语词汇。</p>
+
+<p>
+Engine = 发动机<br>
+Motor = Motor（西语）<br><br>
+
+Aerodynamics = 空气动力学<br>
+Aerodinámica = 空气动力学（西语）
+</p>
+
+<button onclick="speakEnglish()">
+🔊 英语发音
+</button>
+
+<button onclick="speakSpanish()">
+🔊 西语发音
+</button>
+</div>
+
+<div class="card">
+<h2>🏁 今日测验</h2>
+
+<p>Engine 的意思是什么？</p>
+
+<button onclick="checkAnswer()">
+查看答案
+</button>
+
+<p id="result"></p>
+</div>
+
+<script>
+
+function speakEnglish(){
+const msg=new SpeechSynthesisUtterance(
+"Engine. Aerodynamics. Front tyre. Rear tyre."
+);
+msg.lang="en-US";
+speechSynthesis.speak(msg);
+}
+
+function speakSpanish(){
+const msg=new SpeechSynthesisUtterance(
+"Motor. Aerodinamica."
+);
+msg.lang="es-ES";
+speechSynthesis.speak(msg);
+}
+
+function checkAnswer(){
+document.getElementById("result").innerHTML=
+"✅ Engine = 发动机";
+}
+
+</script>
+
+</body>
+</html>
